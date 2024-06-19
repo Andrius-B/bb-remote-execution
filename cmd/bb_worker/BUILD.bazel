@@ -1,5 +1,6 @@
 load("@com_github_buildbarn_bb_storage//tools:container.bzl", "container_push_official", "multiarch_go_image")
 load("@rules_go//go:def.bzl", "go_binary", "go_library")
+load("@rules_oci//oci:defs.bzl", "oci_image", "oci_image_index", "oci_push", "oci_tarball")
 
 go_library(
     name = "bb_worker_lib",
@@ -76,6 +77,12 @@ go_binary(
 multiarch_go_image(
     name = "bb_worker_container",
     binary = ":bb_worker",
+)
+
+oci_tarball(
+    name = "bb_worker_tarball",
+    image = ":bb_worker_container_amd64_image",
+    repo_tags = ["bb-worker-patched:latest"],
 )
 
 container_push_official(

@@ -4,6 +4,7 @@
 package configuration
 
 import (
+	"fmt"
 	"time"
 
 	"github.com/buildbarn/bb-remote-execution/pkg/filesystem/virtual"
@@ -42,6 +43,7 @@ func (m *fuseMount) Expose(terminationGroup program.Group, rootDirectory virtual
 		authenticator = fuse.NewInHeaderAuthenticator(compiledExpression)
 	}
 
+	fmt.Println("Mounting FUSE on %v", m.mountPath)
 	// Launch the FUSE server.
 	removeStaleMounts(m.mountPath)
 	deterministicTimestamp := uint64(filesystem.DeterministicFileModificationTimestamp.Unix())
